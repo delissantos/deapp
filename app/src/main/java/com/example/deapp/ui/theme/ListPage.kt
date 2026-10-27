@@ -15,20 +15,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.deapp.MainViewModel
 import com.example.deapp.model.City
-
-private fun getCities() = List(20) { i ->
-    City(
-        name = "Cidade $i",
-        weather = "Carregando clima..."
-    )
-}
 
 @Composable
 fun CityItem(
@@ -46,7 +39,8 @@ fun CityItem(
     ) {
         Icon(
             imageVector = Icons.Rounded.FavoriteBorder,
-            contentDescription = "Favorito"
+            contentDescription = "Favorito",
+            tint = Color.White
         )
 
         Spacer(modifier = Modifier.size(12.dp))
@@ -76,11 +70,11 @@ fun CityItem(
 }
 
 @Composable
-fun ListPage(modifier: Modifier = Modifier) {
-    val cityList = remember {
-        getCities().toMutableList()
-    }
-
+fun ListPage(
+    viewModel: MainViewModel,
+    modifier: Modifier = Modifier
+) {
+    val cityList = viewModel.cities
     val activity = LocalActivity.current
 
     LazyColumn(
@@ -89,7 +83,10 @@ fun ListPage(modifier: Modifier = Modifier) {
             .background(Color.Magenta)
             .padding(8.dp)
     ) {
-        items(cityList, key = { it.name }) { city ->
+        items(
+            items = cityList,
+            key = { city -> city.name }
+        ) { city ->
             CityItem(
                 city = city,
                 onClick = {
@@ -100,11 +97,7 @@ fun ListPage(modifier: Modifier = Modifier) {
                     ).show()
                 },
                 onClose = {
-                    Toast.makeText(
-                        activity,
-                        "Você clicou no X de ${city.name}",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    viewModel.remove(city)
                 }
             )
         }
