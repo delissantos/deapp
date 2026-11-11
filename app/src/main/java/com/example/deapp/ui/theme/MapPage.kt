@@ -12,22 +12,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.fillMaxSize
+import com.google.android.gms.maps.model.LatLng
+
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
 
 @Composable
-fun MapPage(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Color.Gray)
-            .wrapContentSize(Alignment.Center)
+fun MapPage(
+    modifier: Modifier = Modifier
+) {
+    val recife = remember {
+        MarkerState(LatLng(-8.05, -34.9))
+    }
+
+    val caruaru = remember {
+        MarkerState(LatLng(-8.27, -35.98))
+    }
+
+    val joaopessoa = remember {
+        MarkerState(LatLng(-7.12, -34.84))
+    }
+
+    GoogleMap(
+        modifier = modifier.fillMaxSize()
     ) {
-        Text(
-            text = "Mapa",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
+        // Marcadores aqui
     }
 }
