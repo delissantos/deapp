@@ -3,6 +3,8 @@ package com.example.deapp
 
 import android.app.Activity
 import android.os.Bundle
+import android.widget.Toast
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
@@ -27,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import android.content.Intent
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +47,8 @@ fun LoginPage() {
     var password by rememberSaveable { mutableStateOf("") }
 
     val activity = LocalActivity.current as Activity
+    val auth = FirebaseAuth.getInstance()
+
     val campoModifier = Modifier.fillMaxWidth(0.9f)
 
     Column(
@@ -85,21 +89,43 @@ fun LoginPage() {
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-
             Button(
                 onClick = {
-                    activity.startActivity(
-                        Intent(activity, MainActivity::class.java).setFlags(
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        )
-                    )
+                    auth.signInWithEmailAndPassword(
+                        email.trim(),
+                        password
+                    ).addOnCompleteListener(activity) { task ->
+
+                        if (task.isSuccessful) {
+                            activity.startActivity(
+                                Intent(
+                                    activity,
+                                    MainActivity::class.java
+                                ).setFlags(
+                                    Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                )
+                            )
+
+                            Toast.makeText(
+                                activity,
+                                "Login OK!",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                        } else {
+                            Toast.makeText(
+                                activity,
+                                "Login FALHOU!",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
                 },
                 enabled = email.isNotBlank() &&
                         password.isNotBlank()
             ) {
                 Text("Login")
             }
-
 
             Button(
                 onClick = {
@@ -122,6 +148,5 @@ fun LoginPage() {
         ) {
             Text("Criar conta")
         }
-
     }
 }
