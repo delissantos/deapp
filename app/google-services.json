@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "52762192956",
+    "project_id": "charismatic-fx-513712-u1",
+    "storage_bucket": "charismatic-fx-513712-u1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52762192956:android:505d3504e7099d59182739",
+        "android_client_info": {
+          "package_name": "com.example.deapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbM24ZqXnj5MTTlkhEYsAwCjbUagvE4iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

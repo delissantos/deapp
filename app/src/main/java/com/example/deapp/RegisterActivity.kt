@@ -5,8 +5,8 @@ import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.activity.compose.LocalActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.auth.FirebaseAuth
+import android.util.Log
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +48,8 @@ fun RegisterPage() {
     var repetirSenha by rememberSaveable { mutableStateOf("") }
 
     val activity = LocalActivity.current as Activity
+    val auth = FirebaseAuth.getInstance()
+
     val campoModifier = Modifier.fillMaxWidth()
 
     Column(
@@ -100,13 +104,40 @@ fun RegisterPage() {
 
         Button(
             onClick = {
-                Toast.makeText(
-                    activity,
-                    "Registro confirmado!",
-                    Toast.LENGTH_LONG
-                ).show()
+                if (senha.length < 6) {
+                    Toast.makeText(
+                        activity,
+                        "A senha deve ter pelo menos 6 caracteres!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    auth.createUserWithEmailAndPassword(
+                        email.trim(),
+                        senha
+                    ).addOnCompleteListener(activity) { task ->
 
-                activity.finish()
+                        if (task.isSuccessful) {
+                            Toast.makeText(
+                                activity,
+                                "Registro OK!",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            activity.finish()
+
+                        } else {
+                            val erro = task.exception
+
+                            Log.e("FIREBASE_AUTH", "Erro ao cadastrar usuário", erro)
+
+                            Toast.makeText(
+                                activity,
+                                "Erro: ${erro?.localizedMessage}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
             },
             enabled = nome.isNotBlank() &&
                     email.isNotBlank() &&
