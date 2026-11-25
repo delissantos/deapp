@@ -87,7 +87,6 @@ class MainActivity : ComponentActivity() {
                                 .padding(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-
                             Text(
                                 text = "WeatherApp",
                                 modifier = Modifier.weight(1f)
@@ -103,7 +102,8 @@ class MainActivity : ComponentActivity() {
 
                                     FirebaseAuth.getInstance().signOut()
 
-                                    finish()
+                                    // O WeatherApp detectará a saída
+                                    // e abrirá a LoginActivity.
                                 }
                             ) {
                                 Text("Sair")
@@ -123,7 +123,7 @@ class MainActivity : ComponentActivity() {
                         )
                     },
 
-                    // Botão para adicionar cidade
+                    // Botão para adicionar uma cidade
                     floatingActionButton = {
                         if (showButton) {
                             FloatingActionButton(

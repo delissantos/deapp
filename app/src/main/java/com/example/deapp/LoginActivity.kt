@@ -4,7 +4,6 @@ package com.example.deapp
 import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
-import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
@@ -32,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,6 +43,7 @@ class LoginActivity : ComponentActivity() {
 
 @Composable
 fun LoginPage() {
+
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
 
@@ -58,6 +59,7 @@ fun LoginPage() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Text(
             text = "Bem-vindo/a!",
             fontSize = 24.sp
@@ -89,6 +91,7 @@ fun LoginPage() {
         Row(
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+
             Button(
                 onClick = {
                     auth.signInWithEmailAndPassword(
@@ -97,14 +100,6 @@ fun LoginPage() {
                     ).addOnCompleteListener(activity) { task ->
 
                         if (task.isSuccessful) {
-                            activity.startActivity(
-                                Intent(
-                                    activity,
-                                    MainActivity::class.java
-                                ).setFlags(
-                                    Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                )
-                            )
 
                             Toast.makeText(
                                 activity,
@@ -112,7 +107,11 @@ fun LoginPage() {
                                 Toast.LENGTH_LONG
                             ).show()
 
+                            // O WeatherApp detectará a autenticação
+                            // e abrirá a MainActivity.
+
                         } else {
+
                             Toast.makeText(
                                 activity,
                                 "Login FALHOU!",
@@ -142,7 +141,10 @@ fun LoginPage() {
         Button(
             onClick = {
                 activity.startActivity(
-                    Intent(activity, RegisterActivity::class.java)
+                    android.content.Intent(
+                        activity,
+                        RegisterActivity::class.java
+                    )
                 )
             }
         ) {

@@ -4,6 +4,7 @@ package com.example.deapp
 import android.app.Activity
 import android.os.Bundle
 import android.widget.Toast
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
@@ -28,9 +29,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
-import android.util.Log
 
 class RegisterActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,6 +43,7 @@ class RegisterActivity : ComponentActivity() {
 
 @Composable
 fun RegisterPage() {
+
     var nome by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var senha by rememberSaveable { mutableStateOf("") }
@@ -59,6 +61,7 @@ fun RegisterPage() {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Text(
             text = "Criar conta",
             fontSize = 26.sp
@@ -104,31 +107,42 @@ fun RegisterPage() {
 
         Button(
             onClick = {
+
                 if (senha.length < 6) {
+
                     Toast.makeText(
                         activity,
                         "A senha deve ter pelo menos 6 caracteres!",
                         Toast.LENGTH_LONG
                     ).show()
+
                 } else {
+
                     auth.createUserWithEmailAndPassword(
                         email.trim(),
                         senha
                     ).addOnCompleteListener(activity) { task ->
 
                         if (task.isSuccessful) {
+
                             Toast.makeText(
                                 activity,
                                 "Registro OK!",
                                 Toast.LENGTH_LONG
                             ).show()
 
-                            activity.finish()
+                            // O WeatherApp detectará o login
+                            // e abrirá a MainActivity.
 
                         } else {
+
                             val erro = task.exception
 
-                            Log.e("FIREBASE_AUTH", "Erro ao cadastrar usuário", erro)
+                            Log.e(
+                                "FIREBASE_AUTH",
+                                "Erro ao cadastrar usuário",
+                                erro
+                            )
 
                             Toast.makeText(
                                 activity,
